@@ -21,7 +21,8 @@ def menu_loop():
 
 
 def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    if os.environ.get('DEBUG', False) != 'true':
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def view_product():
@@ -30,12 +31,15 @@ def view_product():
     user_input = None
     while user_input != 'q':
         user_input = input('Please enter valid Product ID: ').strip()
+        clear()
+        print("Enter 'q' to quit.")
         if user_input == 'q':
             break
 
         product, err, err_msg = ProductService.get_product_by_id(user_input)
         if err:
             clear()
+            print("Enter 'q' to quit.")
             print(err_msg)
             continue
 
@@ -49,7 +53,17 @@ def view_product():
 
 def add_product():
     """Add a new product to the database"""
-    pass
+    clear()
+    product_data = dict({
+        'product_name': '',
+        'product_quantity': '',
+        'product_price': '',
+    })
+    for entry in product_data.keys():
+        key_list = [k.capitalize() for k in entry.split('_')]
+        product_data[entry] = input(f"Please enter {' '.join(key_list)}: ").strip()
+    if input('Save entry? [Yn] ').lower() != 'n':
+        ProductService.create_record(product_data)
 
 
 def backup_inventory():
