@@ -23,7 +23,10 @@ class ProductService(BaseService):
 
     @classmethod
     def get_product_by_id(cls, product_id):
-        return cls.model.select().where(cls.model.product_id == product_id).dicts().get()
+        try:
+            return cls.model.select().where(cls.model.product_id == product_id).dicts().get(), False, None
+        except cls.model.DoesNotExist:
+            return None, True, f"The Queried value of {product_id} does not Exist, please try again"
 
     @classmethod
     def get_product_price(cls, price):

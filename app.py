@@ -27,20 +27,24 @@ def clear():
 def view_product():
     """View a single product's inventory"""
     print("Enter 'q' to quit.")
-    user_input = input('Please enter valid Product ID: ').strip()
-    if user_input == 'q':
-        return
-    try:
-        product = ProductService.get_product_by_id(user_input)
+    user_input = None
+    while user_input != 'q':
+        user_input = input('Please enter valid Product ID: ').strip()
+        if user_input == 'q':
+            break
+
+        product, err, err_msg = ProductService.get_product_by_id(user_input)
+        if err:
+            clear()
+            print(err_msg)
+            continue
+
         print(f"""
-Name: {product['product_name']}
-Quantity: {product['product_quantity']}
-Price: {ProductService.get_product_price(product['product_price'])}
-Last Updated: {product['date_updated']}
-""")
-    except ValueError:
-        print('Invalid response')
-        view_product()
+    Name: {product['product_name']}
+    Quantity: {product['product_quantity']}
+    Price: {ProductService.get_product_price(product['product_price'])}
+    Last Updated: {product['date_updated']}
+    """)
 
 
 def add_product():
