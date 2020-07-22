@@ -7,8 +7,12 @@ from services.services import ProductService
 def menu_loop():
     """Show the menu"""
     choice = None
+    err = False
 
     while choice != 'q':
+        clear()
+        if err:
+            print(err)
         print("Enter 'q' to quit.")
         for key, value in menu.items():
             print('{}) {}'.format(key, value.__doc__))
@@ -16,8 +20,11 @@ def menu_loop():
         clear()
 
         if choice in menu:
+            err = False
             clear()
             menu[choice]()
+        else:
+            err = f"{choice} is an invalid Option, Please try Again"
 
 
 def clear():
