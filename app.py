@@ -75,7 +75,7 @@ def add_product():
 
 def backup_inventory():
     """Make a backup of the entire inventory"""
-    ProductService.backup_database(format='csv', filepath='storage/backup.csv')
+    ProductService.backup_database(db_format='csv', filepath='storage/backup.csv')
     print("Inventory is now Backed up")
 
 

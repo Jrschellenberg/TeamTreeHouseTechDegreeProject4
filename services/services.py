@@ -13,9 +13,10 @@ class BaseService:
         cls.model.close()
 
     @classmethod
-    def backup_database(cls, format, filepath):
+    # http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#dataset
+    def backup_database(cls, db_format, filepath):
         db = DataSet('sqlite:///:memory:')
-        db.freeze(cls.model.select(), format=format, filename=filepath)
+        db.freeze(cls.model.select(), format=db_format, filename=filepath)
 
 
 class ProductService(BaseService):
