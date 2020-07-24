@@ -41,7 +41,6 @@ class ProductService(BaseService):
     @classmethod
     def create_record(cls, row):
         try:
-            row['product_price'] = int(round(float(row['product_price'].strip('$')) * 100))
             cls.model.create(**row)
         except IntegrityError as err:
             query = cls.model.select().where(cls.model.product_name == row['product_name'])
