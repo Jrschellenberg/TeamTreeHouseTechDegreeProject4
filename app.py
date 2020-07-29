@@ -12,12 +12,15 @@ def is_integer(var):
 def menu_loop():
     """Show the menu"""
     choice = None
+    msg = None
     err = False
 
     while choice != 'q':
         clear()
         if err:
             print(err)
+        if msg:
+            print(msg)
         print("Enter 'q' to quit.")
         for key, value in menu.items():
             print('{}) {}'.format(key, value.__doc__))
@@ -27,9 +30,10 @@ def menu_loop():
         if choice in menu:
             err = False
             clear()
-            menu[choice]()
+            msg = menu[choice]()
         else:
             err = f"{choice} is an invalid Option, Please try Again"
+            msg = False
 
 
 def clear():
@@ -61,6 +65,7 @@ def view_product():
     Price: {ProductService.get_product_price(product['product_price'])}
     Last Updated: {product['date_updated']}
     """)
+    return ''
 
 
 def add_product():
@@ -115,12 +120,13 @@ def add_product():
 
     if input('Save entry? [Yn] ').lower() != 'n':
         ProductService.create_record(product_data)
+    return ''
 
 
 def backup_inventory():
     """Make a backup of the entire inventory"""
     ProductService.backup_database(db_format='csv', filepath='storage/backup.csv')
-    print("Inventory is now Backed up")
+    return 'Inventory is now Backed up'
 
 
 menu = OrderedDict([
